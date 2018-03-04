@@ -13,7 +13,7 @@ public class StackMin {
     
     public void add(int a) {
         stack.push(a);
-        if(a <= min.peek()) {
+        if(min.isEmpty() || a <= min.peek()) {
             min.push(a);
         }
     }
