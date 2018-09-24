@@ -6,10 +6,10 @@ public class ReadWriteLock {
 
     private int read = 0;
     private int request = 0;
-    private final Semaphore write = new Semaphore(1);
+    private int write = 0;
 
     public synchronized void lockRead() throws InterruptedException {
-        while(write.availablePermits() > 0 && request > 0) {
+        while(write > 0 && request > 0) {
             wait();
         }
         read++;
@@ -23,15 +23,15 @@ public class ReadWriteLock {
     public synchronized void lockWrite() throws InterruptedException {
         request++;
 
-        while(read > 0){
+        while(write > 0 || read > 0){
             wait();
         }
-
-        write.acquire();
+        request--;
+        write++;
     }
 
     public synchronized void unlockWrite() throws InterruptedException {
-        request--;
-        write.release();
+        write--;
+        notifyAll();
     }
 }
