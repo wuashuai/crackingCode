@@ -1,4 +1,4 @@
-package interview;
+package interview.quip;
 
 import java.util.*;
 
